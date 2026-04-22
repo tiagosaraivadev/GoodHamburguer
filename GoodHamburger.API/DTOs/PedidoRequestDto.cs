@@ -2,6 +2,6 @@
 {
     public class PedidoRequestDto
     {
-        public List<int> ItenIds { get; set; }
+        public List<int> ItensId { get; set; }
     }
 }

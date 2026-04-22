@@ -39,10 +39,10 @@ namespace GoodHamburger.API.Services
         public async Task<PedidoRespostaDto> CriarAsync(PedidoRequestDto dto)
         {
             var itens = await _context.Itens
-                .Where(i => dto.ItenIds.Contains(i.Id))
+                .Where(i => dto.ItensId.Contains(i.Id))
                 .ToListAsync();
 
-            PedidosUtils.ValidarItens(itens, dto.ItenIds);
+            PedidosUtils.ValidarItens(itens, dto.ItensId);
 
             var pedido = new Pedido { Itens = itens };
             PedidosUtils.CalcularValores(pedido);
@@ -58,10 +58,10 @@ namespace GoodHamburger.API.Services
                 ?? throw new KeyNotFoundException("Pedido não encontrado.");
 
             var itens = await _context.Itens
-                .Where(i => dto.ItenIds.Contains(i.Id))
+                .Where(i => dto.ItensId.Contains(i.Id))
                 .ToListAsync();
 
-            PedidosUtils.ValidarItens(itens, dto.ItenIds);
+            PedidosUtils.ValidarItens(itens, dto.ItensId);
 
             pedido.Itens = itens;
 

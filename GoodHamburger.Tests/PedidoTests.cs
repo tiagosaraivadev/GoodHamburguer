@@ -48,7 +48,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_PedidoSemItens_DeveLancarExcecao()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int>() };
+        var dto = new PedidoRequestDto { ItensId = new List<int>() };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -58,7 +58,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_ItensDuplicados_DeveLancarExcecao()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 1 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 1 } };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -68,7 +68,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_IdInexistente_DeveLancarExcecao()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 99 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 99 } };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -78,7 +78,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_MaisDeUmSanduiche_DeveLancarExcecao()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 2 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 2 } };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -91,7 +91,7 @@ public class ValidadorPedidoTests
         _context.Itens.Add(new Item { Id = 99, Nome = "Batata Extra", Preco = 2.00m, Tipo = TipoItem.Batata });
         _context.SaveChanges();
 
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 4, 99 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 4, 99 } };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -104,7 +104,7 @@ public class ValidadorPedidoTests
         _context.Itens.Add(new Item { Id = 98, Nome = "Suco", Preco = 2.50m, Tipo = TipoItem.Refrigerante });
         _context.SaveChanges();
 
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 5, 98 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 5, 98 } };
 
         var ex = await Assert.ThrowsAsync<ArgumentException>(() => _service.CriarAsync(dto));
 
@@ -114,7 +114,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_PedidoValido_DeveRetornarPedidoCriado()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 4, 5 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 4, 5 } };
 
         _repositoryMock
             .Setup(r => r.CriarAsync(It.IsAny<Pedido>()))
@@ -207,7 +207,7 @@ public class ValidadorPedidoTests
             .Setup(r => r.ObterPorIdAsync(99))
             .ReturnsAsync((Pedido?)null);
 
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1 } };
 
         var ex = await Assert.ThrowsAsync<KeyNotFoundException>(() => _service.AtualizarAsync(99, dto));
 
@@ -227,7 +227,7 @@ public class ValidadorPedidoTests
             .Setup(r => r.AtualizarAsync(It.IsAny<Pedido>()))
             .ReturnsAsync((Pedido p) => p);
 
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 4 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 4 } };
 
         var resultado = await _service.AtualizarAsync(1, dto);
 
@@ -277,7 +277,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_SanduicheComBatataERefrigerante_DeveAplicar20PorCentoDesconto()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 4, 5 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 4, 5 } };
 
         _repositoryMock
             .Setup(r => r.CriarAsync(It.IsAny<Pedido>()))
@@ -293,7 +293,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_SanduicheComRefrigerante_DeveAplicar15PorCentoDesconto()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 5 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 5 } };
 
         _repositoryMock
             .Setup(r => r.CriarAsync(It.IsAny<Pedido>()))
@@ -309,7 +309,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_SanduicheComBatata_DeveAplicar10PorCentoDesconto()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1, 4 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1, 4 } };
 
         _repositoryMock
             .Setup(r => r.CriarAsync(It.IsAny<Pedido>()))
@@ -325,7 +325,7 @@ public class ValidadorPedidoTests
     [Fact]
     public async Task CriarAsync_SemCombinacaoDeDesconto_NaoDeveAplicarDesconto()
     {
-        var dto = new PedidoRequestDto { ItenIds = new List<int> { 1 } };
+        var dto = new PedidoRequestDto { ItensId = new List<int> { 1 } };
 
         _repositoryMock
             .Setup(r => r.CriarAsync(It.IsAny<Pedido>()))
