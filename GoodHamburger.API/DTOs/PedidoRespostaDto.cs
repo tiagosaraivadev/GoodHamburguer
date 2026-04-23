@@ -3,7 +3,7 @@
     public class PedidoRespostaDto
     {
         public int Id { get; set; }
-        public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
         public List<ItemRespostaDto> Itens { get; set; }
         public decimal Subtotal { get; set; }
         public decimal Desconto { get; set; }

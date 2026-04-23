@@ -6,5 +6,6 @@
         public string Nome { get; set; }
         public decimal Preco { get; set; }
         public TipoItem Tipo { get; set; }
+        public List<Pedido> Pedidos { get; set; } = new();
     }
 }
