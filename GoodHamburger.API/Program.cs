@@ -24,6 +24,16 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor", policy =>
+    {
+        policy.WithOrigins("http://localhost:5120")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -31,6 +41,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.MapScalarApiReference();
+app.UseCors("AllowBlazor");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

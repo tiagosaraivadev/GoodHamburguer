@@ -1,0 +1,22 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container justify-content-center">
+        <a class="navbar-brand" href="">Good Hamburger</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="collapse nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3 text-center">
+            <NavLink class="nav-link" style="display: block; text-align: center;" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Início
+            </NavLink>
+        </div>
+        <div class="nav-item px-3 text-center">
+            <NavLink class="nav-link" style="display: block; text-align: center;" href="pedidos">
+                <span class="oi oi-cart" aria-hidden="true"></span> Pedidos
+            </NavLink>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,50 @@
+﻿@page "/"
+@using GoodHamburger.Blazor.Models
+@using GoodHamburger.Blazor.Services
+@inject PedidoService PedidoService
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h1>Good Hamburger</h1>
+        <p class="lead">Bem-vindo ao sistema de pedidos da Good Hamburger!</p>
+    </div>
+
+    <h4>Cardápio</h4>
+
+    @if (_carregando)
+    {
+        <p>Carregando cardápio...</p>
+    }
+    else if (!_itens.Any())
+    {
+        <p>Nenhum item encontrado.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in _itens)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Nome</h5>
+                            <p class="card-text text-muted">@item.Tipo</p>
+                            <p class="card-text fw-bold">R$ @item.Preco.ToString("F2")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<ItemModel> _itens = new();
+    private bool _carregando = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _itens = await PedidoService.ObterCardapioAsync();
+        _carregando = false;
+    }
+}
