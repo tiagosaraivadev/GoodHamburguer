@@ -6,6 +6,7 @@ using GoodHamburger.API.Repositories.Interfaces;
 using GoodHamburger.API.Services;
 using GoodHamburger.Tests.Mocks.PedidosMock;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace GoodHamburger.Tests;
@@ -35,10 +36,13 @@ public class ValidadorPedidoTests
         );
         _context.SaveChanges();
 
-        var mapperConfig = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<API.Mappers.PedidoProfile>();
-        });
+        var configExpression = new MapperConfigurationExpression();
+        configExpression.AddProfile<API.Mappers.PedidoProfile>();
+
+        var mapperConfig = new MapperConfiguration(
+            configExpression,
+            LoggerFactory.Create(b => b.AddConsole())
+        );
 
         _service = new PedidoService(_repositoryMock.Object, _context, mapperConfig.CreateMapper());
     }

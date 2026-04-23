@@ -1,6 +1,7 @@
 using FluentValidation;
 using GoodHamburger.API.Data;
 using GoodHamburger.API.Filters;
+using GoodHamburger.API.Mappers;
 using GoodHamburger.API.Repositories;
 using GoodHamburger.API.Repositories.Interfaces;
 using GoodHamburger.API.Services;
@@ -20,7 +21,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=goodhamburger.db"));
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<PedidoProfile>());
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 
