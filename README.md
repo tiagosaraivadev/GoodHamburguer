@@ -108,7 +108,7 @@ dotnet tool install --global dotnet-ef
 ### 1. Clonar o repositório
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/tiagosaraivadev/GoodHamburguer.git
 cd GoodHamburger
 ```
 
