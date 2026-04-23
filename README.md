@@ -131,8 +131,6 @@ dotnet run
 
 O frontend estará disponível em `http://localhost:5120`.
 
-```
-
 ---
 
 ## Observações sobre Portas
@@ -152,4 +150,3 @@ Lembre-se de atualizar também a configuração de CORS no `Program.cs` da API e
 - **Paginação na listagem de pedidos** — optou-se por manter a solução simples dado o contexto
 - **Testes de integração** — foram implementados apenas testes unitários das regras de negócio, que é onde reside a complexidade do domínio. Testes de controller e repository foram omitidos intencionalmente
 - **Docker** — não incluído pois o SQLite elimina a necessidade de infraestrutura adicional
-```
