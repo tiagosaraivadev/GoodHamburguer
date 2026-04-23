@@ -4,6 +4,40 @@ namespace GoodHamburger.API.Utils
 {
     public class PedidosUtils
     {
+        private static readonly List<Action<List<Item>, List<int>>> _regras = new()
+        {
+            (itens, ids) =>
+            {
+                if (ids == null || ids.Count == 0)
+                    throw new ArgumentException("O pedido deve conter ao menos um item.");
+            },
+            (itens, ids) =>
+            {
+                if (ids.Count != ids.Distinct().Count())
+                    throw new ArgumentException("O pedido contém itens duplicados.");
+            },
+            (itens, ids) =>
+            {
+                if (itens.Count != ids.Count)
+                    throw new ArgumentException("Um ou mais itens informados não existem no cardápio.");
+            },
+            (itens, ids) =>
+            {
+                if (itens.Count(i => i.Tipo == TipoItem.Sanduiche) > 1)
+                    throw new ArgumentException("O pedido pode conter apenas um sanduíche.");
+            },
+            (itens, ids) =>
+            {
+                if (itens.Count(i => i.Tipo == TipoItem.Batata) > 1)
+                    throw new ArgumentException("O pedido pode conter apenas uma batata.");
+            },
+            (itens, ids) =>
+            {
+                if (itens.Count(i => i.Tipo == TipoItem.Refrigerante) > 1)
+                    throw new ArgumentException("O pedido pode conter apenas um refrigerante.");
+            }
+        };
+
         public static void CalcularValores(Pedido pedido)
         {
             pedido.Subtotal = pedido.Itens.Sum(i => i.Preco);
@@ -25,23 +59,8 @@ namespace GoodHamburger.API.Utils
 
         public static void ValidarItens(List<Item> itens, List<int> idsRecebidos)
         {
-            if (idsRecebidos == null || idsRecebidos.Count == 0)
-                throw new ArgumentException("O pedido deve conter ao menos um item.");
-
-            if (idsRecebidos.Count != idsRecebidos.Distinct().Count())
-                throw new ArgumentException("O pedido contém itens duplicados.");
-
-            if (itens.Count != idsRecebidos.Count)
-                throw new ArgumentException("Um ou mais itens informados não existem no cardápio.");
-
-            if (itens.Count(i => i.Tipo == TipoItem.Sanduiche) > 1)
-                throw new ArgumentException("O pedido pode conter apenas um sanduíche.");
-
-            if (itens.Count(i => i.Tipo == TipoItem.Batata) > 1)
-                throw new ArgumentException("O pedido pode conter apenas uma batata.");
-
-            if (itens.Count(i => i.Tipo == TipoItem.Refrigerante) > 1)
-                throw new ArgumentException("O pedido pode conter apenas um refrigerante.");
+            foreach (var regra in _regras)
+                regra(itens, idsRecebidos);
         }
     }
 }
